@@ -14,4 +14,6 @@ class UE_ARPG_GAS_CPP_API AARPGHeroCharacter : public AARPGBaseCharacter
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void BeginPlay() override;
 };
