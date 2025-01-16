@@ -8,7 +8,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
-
+class UDataAsset_InputConfig;
+struct FInputActionValue;
 /**
  * 
  */
@@ -18,7 +19,9 @@ class UE_ARPG_GAS_CPP_API AARPGHeroCharacter : public AARPGBaseCharacter
 	GENERATED_BODY()
 public:
 	AARPGHeroCharacter();
+
 protected:
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void BeginPlay() override;
 
 private:
@@ -28,5 +31,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+#pragma endregion
+
+#pragma region Inputs
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
+	UDataAsset_InputConfig* InputConfigDataAsset;
+	
+	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_Look(const FInputActionValue& InputActionValue);
 #pragma endregion
 };
