@@ -10,6 +10,7 @@
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/ARPGEnhancedInputComponent.h"
 #include "ARPGGameplayTags.h"
+#include "GAS/ARPGAbilitySystemComponent.h"
 
 #include "ARPGDebugHelper.h"
 
@@ -37,6 +38,19 @@ AARPGHeroCharacter::AARPGHeroCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
+void AARPGHeroCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (ARPGAbilitySystemComponent && ARPGAttributeSet)
+	{
+		const FString AbilitySystemInfo = FString::Printf(TEXT("Owner Actor: %s, AvatarActor: %s"), 
+			*ARPGAbilitySystemComponent->GetOwnerActor()->GetActorLabel(), *ARPGAbilitySystemComponent->GetAvatarActor()->GetActorLabel());
+		Debug::Print(TEXT("GAS component is valid. ") + AbilitySystemInfo, FColor::Green);
+		Debug::Print(TEXT("GAS attribute is valid. ") + AbilitySystemInfo, FColor::Green);
+	}
+}
+
 void AARPGHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	checkf(InputConfigDataAsset, TEXT("Input config data asset is not assigned"));
@@ -56,7 +70,6 @@ void AARPGHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 void AARPGHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Debug::Print(TEXT("Hero has been born \0o0/"));
 }
 
 void AARPGHeroCharacter::Input_Move(const FInputActionValue& InputActionValue)
